@@ -1,0 +1,32 @@
+# Environment variables
+.env
+.mp-editor/.env
+
+# Virtual environment
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Output directories
+mp-editor-output/
+tmp/
+*.log
+
+# Test files
+test*.md
