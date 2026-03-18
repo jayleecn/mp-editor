@@ -274,11 +274,20 @@ def test_wechat_connection() -> Tuple[bool, str]:
         if not app_id or not app_secret:
             return False, "微信配置不完整"
 
-        client = WeChatClient(app_id, app_secret)
+        # WeChatClient is singleton, no args needed
+        client = WeChatClient()
         token = client.get_access_token()
         return True, "微信 API 连接正常" if token else "微信 API 连接失败"
     except Exception as e:
-        return False, f"微信 API 连接失败：{str(e)}"
+        error_msg = str(e)
+        if "errcode" in error_msg:
+            if "40164" in error_msg:
+                return False, "微信 API 连接失败：IP 不在白名单中，请添加 IP 到微信后台"
+            elif "40125" in error_msg or "40001" in error_msg:
+                return False, "微信 API 连接失败：AppSecret 错误，请检查配置"
+            elif "40132" in error_msg:
+                return False, "微信 API 连接失败：AppID 错误，请检查配置"
+        return False, f"微信 API 连接失败：{error_msg}"
 
 
 def cmd_setup(args):
