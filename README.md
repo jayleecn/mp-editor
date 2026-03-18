@@ -1,336 +1,145 @@
-# MP-Editor Skill
+# MP-Editor · 公众号 AI 编辑助手
 
-A Claude Code skill for editing and publishing WeChat Official Account articles with AI-powered polishing, cover generation, and seamless publishing to WeChat draft box.
+> 把写好的 Markdown 草稿丢给 AI，自动润色、排版、配图，直接发到公众号草稿箱。
 
-## Features
+---
 
-- **Article Polishing**: LLM-powered article refinement with title and abstract generation
-- **AI Cover Generation**: Automatic cover image creation based on article content
-- **Markdown to HTML**: Converts Markdown to WeChat-optimized HTML with professional styling
-- **One-Click Publishing**: Complete workflow from raw text to WeChat draft box
-- **Multi-Provider Support**: Supports multiple LLM and image generation providers with automatic fallback
+## 🚀 运营同学看这里
 
-## Supported Providers
+**把下面这段话复制给你的 AI 助手，它会帮你装好：**
 
-### Text LLM Providers (set via `LLM_PROVIDER` env var)
+> 帮我安装 mp-editor 这个 skill，仓库地址是 https://github.com/jayleecn/mp-editor 。安装完成后，指导我配置 env 文件，需要哪些 key 告诉我去哪里找。
 
-| Provider | Environment Variables | Notes |
-|----------|----------------------|-------|
-| **Aliyun** (default) | `ALIYUN_API_KEY`, `ALIYUN_MODEL` | DashScope OpenAI-compatible API |
-| **Google** | `GOOGLE_API_KEY`, `GOOGLE_MODEL` | Gemini API |
+装好后，你只需要做两件事：
+1. **配置 key**（AI 会指导你）
+2. **发稿**（把 Markdown 丢给 AI 就行）
 
-### Image Generation Providers (set via `IMAGE_PROVIDER` env var)
+---
 
-| Provider | Environment Variables | Notes |
-|----------|----------------------|-------|
-| **Aliyun** (default) | `ALIYUN_API_KEY`, `ALIYUN_IMAGE_MODEL` | DashScope multimodal generation |
-| **Google** | `GOOGLE_API_KEY`, `GOOGLE_IMAGE_MODEL` | Gemini image generation |
+## ✨ 能做什么
 
-**Automatic Fallback**: If the primary provider fails, the system automatically tries alternative providers.
+| 功能 | 说明 |
+|------|------|
+| **润色文章** | AI 自动优化标题、摘要和正文，保持你的风格 |
+| **生成封面** | 根据文章内容自动生成 AI 封面图 |
+| **排版转换** | Markdown 自动转成公众号精美的 HTML 格式 |
+| **一键发布** | 直接推送到公众号草稿箱，你在后台点一下就能群发 |
 
-## Installation
+---
 
-### 1. Install the Skill
+## 📝 使用方法
 
-```bash
-# Clone or copy to your skills directory
-cp -r mp-editor ~/.agents/skills/
+装好后，直接给 AI 发指令：
 
-# Install dependencies
-cd ~/.agents/skills/mp-editor
-pip install -r requirements.txt
+### 1. 本地预览（不发布）
 ```
-
-### 2. Configure Environment
-
-Create the configuration directory and copy the example:
-
-```bash
-mkdir -p ~/.mp-editor
-cp ~/.agents/skills/mp-editor/.env.example ~/.mp-editor/.env
+/mp preview ~/Documents/我的草稿.md
 ```
+AI 会生成 `article.html` 和封面图，你在浏览器打开看看效果。
 
-Edit `~/.mp-editor/.env` with your API keys:
-
-```bash
-# Required: WeChat Official Account
-WECHAT_APP_ID=your_wechat_app_id
-WECHAT_APP_SECRET=your_wechat_app_secret
-
-# Required: LLM Provider (choose at least one)
-## For Aliyun (recommended)
-ALIYUN_API_KEY=your_aliyun_api_key
-ALIYUN_MODEL=qwen3.5-plus
-ALIYUN_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1/
-
-## For Google
-GOOGLE_API_KEY=your_google_api_key
-GOOGLE_MODEL=gemini-2.5-flash
-
-# Required: Image Generation (choose at least one)
-## For Aliyun (recommended)
-ALIYUN_IMAGE_MODEL=z-image-turbo
-
-## For Google
-GOOGLE_IMAGE_MODEL=gemini-2.5-flash-image
-
-# Optional: Provider Selection
-LLM_PROVIDER=aliyun         # Default: aliyun
-IMAGE_PROVIDER=aliyun       # Default: aliyun
+### 2. 直接发布到公众号
 ```
-
-### 3. Get WeChat Credentials
-
-1. Log in to [WeChat Official Account Platform](https://mp.weixin.qq.com/)
-2. Go to "Development" → "Basic Configuration"
-3. Copy the AppID and AppSecret
-
-## Usage
-
-### As a Claude Code Skill
-
-Once installed, use these commands in Claude Code:
-
-#### `/mp polish <file>`
-
-Polish an article using LLM. Generates title, abstract, and formatted content.
-
+/mp publish ~/Documents/我的草稿.md
 ```
-/mp polish ~/Documents/my-article.md
+AI 润色 → 生成封面 → 排版 → 发布到公众号草稿箱。你去公众号后台就能看到。
+
+### 3. 只润色不发布
 ```
+/mp polish ~/Documents/我的草稿.md
+```
+AI 帮你优化文章，生成新的标题和摘要，输出 Markdown 文件。
 
-**Output:**
-- Title (≤20 characters)
-- Abstract (≤50 characters, first-person)
-- Polished Markdown content
+---
 
-#### `/mp preview <file>`
+## 🔧 配置说明
 
-Generate local preview without publishing. Creates HTML and downloads cover image.
+安装完成后，需要配置以下信息（AI 会指导你操作）：
+
+### 1. 微信公众账号（必须）
+- `WECHAT_APP_ID` - 公众号 AppID
+- `WECHAT_APP_SECRET` - 公众号 AppSecret
+
+**获取方式：**
+1. 登录 [微信公众平台](https://mp.weixin.qq.com/)
+2. 左侧菜单「开发」→「基本配置」
+3. 复制 AppID 和 AppSecret
+
+### 2. AI 服务（二选一）
+
+**阿里云 DashScope（推荐，国内稳定）：**
+- `ALIYUN_API_KEY` - [阿里云控制台](https://dashscope.console.aliyun.com/) 创建
+
+**Google Gemini（备选）：**
+- `GOOGLE_API_KEY` - [Google AI Studio](https://aistudio.google.com/) 创建
+
+配置文件位置：`~/.mp-editor/.env`
+
+---
+
+## ❓ 常见问题
+
+### 发布时报错 "invalid ip"
+**原因：** 微信要求把服务器 IP 加入白名单
+**解决：** 把报错信息里的 IP 地址，添加到公众号后台「开发」→「基本配置」→「IP 白名单」
+
+### 封面图生成失败
+**原因：** AI 画图服务暂时不可用
+**解决：** 系统会自动切换到备用服务商，或你可以手动上传封面后使用 `mp 继续发布`
+
+### 找不到配置文件
+**原因：** `.env` 文件没创建或位置不对
+**解决：** 确保文件在 `~/.mp-editor/.env`，不是 skill 目录下
+
+---
+
+## 🔌 支持的 AI 服务商
+
+| 服务 | 支持情况 |
+|------|---------|
+| **阿里云 DashScope** | 默认首选，国内访问快 |
+| **Google Gemini** | 自动兜底，无需配置也能用 |
+
+系统会自动在多个服务商之间切换，一个挂了自动试另一个。
+
+---
+
+## 📁 项目结构（给 AI 看的）
 
 ```
-/mp preview ~/Documents/my-article.md --output-dir ./preview
+mp-editor/
+├── SKILL.md                 # Claude Code skill 定义
+├── README.md                # 本文件
+├── .env.example             # 配置模板
+├── requirements.txt         # Python 依赖
+├── config/                  # AI 提示词配置
+│   ├── polish_node_cfg.json
+│   └── cover_prompt_node_cfg.json
+└── src/
+    ├── main.py              # CLI 入口
+    ├── llm/                 # AI 服务封装
+    ├── graphs/              # 工作流定义
+    └── utils/               # 微信 API 客户端
 ```
 
-**Output directory** (default: `./mp-editor-output/`):
-- `article.html` - WeChat-formatted HTML
-- `article.md` - Polished Markdown
-- `metadata.json` - Article metadata and cover image URL
+---
 
-#### `/mp publish <file>`
-
-Full pipeline: polish → generate cover → convert to HTML → publish to WeChat draft box.
-
-```
-/mp publish ~/Documents/my-article.md
-```
-
-**Result:** Article appears in WeChat Official Account Platform draft box.
-
-### As a CLI Tool
-
-```bash
-cd ~/.agents/skills/mp-editor
-
-# Polish only
-python -m src.main polish /path/to/article.md
-
-# Generate preview
-python -m src.main preview /path/to/article.md --output-dir ./output
-
-# Full publish
-python -m src.main publish /path/to/article.md
-```
-
-## Workflow
-
-The complete workflow consists of 7 nodes orchestrated by LangGraph:
+## 🛠️ 技术架构
 
 ```
 ┌─────────┐   ┌─────────────┐   ┌───────────┐   ┌─────────┐   ┌─────────────┐   ┌────────────────┐   ┌───────────────┐
 │ polish  │ → │ cover_prompt│ → │ image_gen │ → │ md2html │ → │ access_token│ → │ upload_material│ → │ upload_article│
 └─────────┘   └─────────────┘   └───────────┘   └─────────┘   └─────────────┘   └────────────────┘   └───────────────┘
-     │               │                │              │               │                │                   │
-  Generate      Generate AI       Generate      Convert       Get WeChat      Upload cover       Publish to
-  title/       painting prompt    cover image    to HTML       API token        image            draft box
-  abstract
+   润色文章      生成封面提示词      AI 生成封面      转 HTML      获取微信 token      上传封面素材         发布到草稿箱
 ```
 
-1. **polish** - LLM polishes article, generates title/abstract
-2. **cover_prompt** - LLM generates AI painting prompt from title/abstract
-3. **image_gen** - Generates cover image using AI
-4. **md2html** - Converts Markdown to WeChat-friendly HTML
-5. **access_token** - Authenticates with WeChat API
-6. **upload_material** - Uploads cover image to WeChat
-7. **upload_article** - Publishes article to WeChat draft box
+底层使用 LangGraph 编排工作流，支持多 AI 服务商自动切换。
 
-## Configuration Files
+---
 
-### Node Configuration
+## 📄 License
 
-Node behavior can be customized via JSON config files in `config/`:
+MIT - 免费用于个人和商业用途。
 
-#### `config/polish_node_cfg.json`
+---
 
-```json
-{
-    "config": {
-        "model": "qwen-max",
-        "temperature": 0.8,
-        "max_completion_tokens": 4096
-    },
-    "sp": "System prompt for polishing...",
-    "up": "User prompt template with {{content}} variable..."
-}
-```
-
-#### `config/cover_prompt_node_cfg.json`
-
-```json
-{
-    "config": {
-        "model": "qwen-max",
-        "temperature": 0.8
-    },
-    "sp": "System prompt for cover generation...",
-    "up": "User prompt template with {{title}} and {{abstract}} variables..."
-}
-```
-
-**Configuration Keys:**
-- `config`: LLM parameters (model, temperature, etc.)
-- `sp`: System prompt
-- `up`: User prompt template (Jinja2 format)
-
-## Project Structure
-
-```
-mp-editor/
-├── SKILL.md                    # Claude Code skill definition
-├── README.md                   # This file
-├── .env.example                # Environment template
-├── requirements.txt            # Python dependencies
-├── config/                     # Node configuration files
-│   ├── polish_node_cfg.json
-│   └── cover_prompt_node_cfg.json
-└── src/
-    ├── main.py                 # CLI entry point with 3 commands
-    ├── llm/                    # LLM and Image services
-    │   ├── __init__.py
-    │   ├── service.py          # LLMService with fallback
-    │   ├── image_service.py    # ImageGenService with fallback
-    │   └── providers.py        # Provider implementations
-    ├── graphs/                 # LangGraph workflow
-    │   ├── __init__.py
-    │   ├── graph.py            # Main graph definition
-    │   ├── state.py            # Pydantic state models
-    │   └── nodes/              # Node implementations
-    │       ├── polish_node.py
-    │       ├── cover_prompt_node.py
-    │       ├── image_gen_node.py
-    │       ├── md2html_node.py
-    │       ├── access_token_node.py
-    │       ├── upload_material_node.py
-    │       └── upload_article_node.py
-    └── utils/
-        └── wechat_client.py    # WeChat API client
-```
-
-## Architecture
-
-### Provider Abstraction
-
-The skill uses a provider-agnostic architecture:
-
-```
-┌─────────────┐      ┌──────────────┐      ┌─────────────────┐
-│   polish    │─────→│  LLMService  │─────→│ AliyunProvider  │
-│    node     │      │              │      │ GoogleProvider  │
-└─────────────┘      │  (fallback)  │─────→└─────────────────┘
-                     └──────────────┘
-
-┌─────────────┐      ┌──────────────┐      ┌─────────────────┐
-│ image_gen   │─────→│ImageGenService│────→│AliyunImageProvider│
-│    node     │      │              │      │GoogleImageProvider│
-└─────────────┘      │  (fallback)  │─────→└─────────────────┘
-                     └──────────────┘
-```
-
-All providers implement a common interface, allowing seamless switching and fallback.
-
-### State Management
-
-Uses Pydantic models for type-safe state flow:
-
-- `GlobalState` - Complete workflow state
-- `GraphInput` / `GraphOutput` - Entry/exit boundaries
-- Per-node input/output models (e.g., `PolishInput`, `PolishOutput`)
-
-## HTML Styling
-
-The Markdown-to-HTML converter generates WeChat-optimized HTML with:
-
-- **Primary Color**: `#0F4C81` (professional blue)
-- **Headings**: Styled with background colors and borders
-- **Lists**: Custom bullet points
-- **Code Blocks**: Syntax highlighting with Pygments
-- **Blockquotes**: Left border accent
-- **Links**: WeChat-compatible styling
-
-## Troubleshooting
-
-### "ALIYUN_API_KEY not configured"
-
-Make sure you've created `~/.mp-editor/.env` and set the API keys. The skill loads environment from this location.
-
-### "WeChat configuration missing"
-
-Set `WECHAT_APP_ID` and `WECHAT_APP_SECRET` in your environment file.
-
-### JSON parsing errors
-
-The polish node uses multiple fallback strategies for JSON extraction. If you see parsing warnings, the node will attempt to extract content from markdown or plain text.
-
-### Image generation fails
-
-Check that your image provider API key is valid. The service will automatically fall back to alternative providers if configured.
-
-### Cover image not showing in WeChat
-
-The WeChat material upload downloads the image and re-uploads it to WeChat's servers. Ensure the generated image URL is publicly accessible.
-
-## Requirements
-
-- Python 3.10+
-- See `requirements.txt` for package dependencies
-
-## Decoupling from Coze
-
-This skill is a decoupled version of a Coze-native workflow:
-
-- Replaced `coze_coding_dev_sdk.LLMClient` with `LLMService`
-- Replaced `coze_coding_dev_sdk.ImageGenerationClient` with `ImageGenService`
-- Removed Coze-specific runtime dependencies
-- Added environment-based configuration
-- Added CLI interface for standalone usage
-- Added Claude Code skill integration
-
-## License
-
-MIT License - Free for personal and commercial use.
-
-## Contributing
-
-This skill is designed for the Claude Code/OpenClaw ecosystem. To contribute:
-
-1. Fork the repository
-2. Make your changes
-3. Test with `python -m src.main preview <file>`
-4. Submit a pull request
-
-## Support
-
-For issues or questions:
-- Check the troubleshooting section above
-- Review logs for detailed error messages
-- Ensure all required environment variables are set
+**有问题？** 直接把报错信息发给 AI，它会帮你解决。
