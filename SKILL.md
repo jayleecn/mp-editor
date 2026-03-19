@@ -33,9 +33,14 @@ AI 会一步步引导你完成配置，不用看下面的文档。
 
 | 配置项 | 用途 | 获取方式 |
 |--------|------|----------|
-| `WECHAT_APP_ID` | 微信公众号身份 | [微信公众平台](https://mp.weixin.qq.com/) → 开发 → 基本配置 |
+| `WECHAT_APP_ID` | 微信公众号身份 | [微信开发者平台](https://developers.weixin.qq.com/) → 获取你的公众号 APPID |
 | `WECHAT_APP_SECRET` | 微信公众号密钥 | 同上 |
 | `ALIYUN_API_KEY` | AI 服务调用 | [阿里云 DashScope](https://dashscope.console.aliyun.com/) |
+
+**配置步骤：**
+1. 到 https://developers.weixin.qq.com/ 获取你的公众号 APPID 和 AppSecret
+2. 访问 https://ip38.com 查看你的机器出口 IP
+3. 在微信开发者平台添加 IP 白名单
 
 配置会自动检测，缺少时会提示你如何获取。
 
@@ -73,23 +78,20 @@ AI 会一步步引导你完成配置，不用看下面的文档。
 
 ---
 
-### `/mp polish <文件>` - 只润色文章
+### `/mp publish <文件>` - 发布到公众号（最常用）
 
-用 AI 润色文章，生成标题、摘要和优化后的正文，但不发布。
+完整流程：润色 → 生成封面 → 转 HTML → 上传到公众号草稿箱。
 
 **适合场景：**
-- 只想看看 AI 优化后的效果
-- 需要手动修改后再发布
+- 直接发布，一步到位
+- 这是你最常用的命令
 
 **示例：**
 ```
-/mp polish ~/Documents/草稿.md
+/mp publish ~/Documents/草稿.md
 ```
 
-**输出：**
-- 标题（20字以内）
-- 摘要（50字以内）
-- 润色后的 Markdown
+**结果：** 文章出现在公众号后台的草稿箱里，你去后台点群发即可。
 
 ---
 
@@ -113,34 +115,39 @@ AI 会一步步引导你完成配置，不用看下面的文档。
 
 ---
 
-### `/mp publish <文件>` - 发布到公众号
+### `/mp polish <文件>` - 只润色文章
 
-完整流程：润色 → 生成封面 → 转 HTML → 上传到公众号草稿箱。
+用 AI 润色文章，生成标题、摘要和优化后的正文，但不发布。
 
 **适合场景：**
-- 直接发布，一步到位
+- 只想看看 AI 优化后的效果
+- 需要手动修改后再发布
 
 **示例：**
 ```
-/mp publish ~/Documents/草稿.md
+/mp polish ~/Documents/草稿.md
 ```
 
-**结果：** 文章出现在公众号后台的草稿箱里，你去后台点群发即可。
+**输出：**
+- 标题（20字以内）
+- 摘要（50字以内）
+- 润色后的 Markdown
 
 ---
 
 ## 💡 使用流程
 
 ```
-写草稿 → /mp preview → 满意？→ /mp publish → 去公众号后台群发
-            ↓ 不满意
-      修改草稿重新来
+写草稿 → /mp publish → 去公众号后台群发
+            ↓ 想先看效果
+      /mp preview → 满意？→ /mp publish
 ```
 
 **推荐用法：**
-1. 先用 `/mp preview` 看效果
-2. 在浏览器打开生成的 article.html 检查
-3. 满意后运行 `/mp publish` 正式发布
+1. 直接用 `/mp publish` 发布（最省事）
+2. 想先检查效果？用 `/mp preview` 生成本地预览
+3. 在浏览器打开 `article.html` 检查
+4. 满意后运行 `/mp publish` 正式发布
 
 ---
 
@@ -151,10 +158,9 @@ AI 会一步步引导你完成配置，不用看下面的文档。
 **原因：** 微信要求把服务器 IP 加入白名单
 
 **解决：**
-1. 运行 `/mp setup` 查看你的 IP 地址
-2. 登录 [微信公众平台](https://mp.weixin.qq.com/)
-3. 左侧「开发」→「基本配置」→「IP白名单」
-4. 添加你的 IP
+1. 访问 https://ip38.com 查看你的机器出口 IP
+2. 到 https://developers.weixin.qq.com/ 登录你的公众号
+3. 添加 IP 白名单（填入你从 ip38.com 看到的 IP）
 
 ### 2. 封面图生成失败
 

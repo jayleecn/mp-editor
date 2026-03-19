@@ -47,9 +47,9 @@ AI 会一步步引导你完成配置，不用看文档也能搞定。
 
 1️⃣  /mp setup              → 初始化配置（新手必跑）
 2️⃣  /mp help               → 显示本帮助
-3️⃣  /mp polish <文件>       → 只润色文章，不发布
+3️⃣  /mp publish <文件>      → 发布到公众号草稿箱（最常用）
 4️⃣  /mp preview <文件>      → 本地预览效果
-5️⃣  /mp publish <文件>      → 发布到公众号草稿箱
+5️⃣  /mp polish <文件>       → 只润色文章，不发布
 
 💡 使用示例
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -62,16 +62,16 @@ AI 会一步步引导你完成配置，不用看文档也能搞定。
 
 2. 保存为文件，比如 ~/Desktop/草稿.md
 
-3. 让 AI 帮你处理：
+3. 让 AI 帮你处理（推荐直接发布）：
 
-    /mp preview ~/Desktop/草稿.md    # 先看效果
-    /mp publish ~/Desktop/草稿.md    # 直接发布
+    /mp publish ~/Desktop/草稿.md    # 直接发布（最省事）
+    /mp preview ~/Desktop/草稿.md    # 先看效果再发布
 
 ⚠️  注意事项
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 • 发布前需要配置微信公众号参数（AppID/AppSecret）
-• 需要配置 AI 服务密钥（阿里云或 Google）
+• 需要配置阿里云 AI 服务密钥（DashScope）
 • 如果报错 "invalid ip"，需要把 IP 加到微信白名单
 • 运行 /mp setup 可以检查配置并获取详细帮助
 
@@ -122,10 +122,9 @@ def check_config() -> Tuple[bool, List[Dict]]:
 📱 如何获取 WECHAT_APP_ID：
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-1. 登录微信公众平台：https://mp.weixin.qq.com/
-2. 左侧菜单找到「开发」→「基本配置」
-3. 页面顶部可以看到「开发者ID」，复制「AppID」
-4. 粘贴到 ~/.mp-editor/.env 文件中
+1. 访问 https://developers.weixin.qq.com/ 登录你的公众号
+2. 在开发者平台获取你的公众号 APPID
+3. 粘贴到 ~/.mp-editor/.env 文件中
 
 💡 示例：
 WECHAT_APP_ID=wx1234567890abcdef
@@ -141,11 +140,9 @@ WECHAT_APP_ID=wx1234567890abcdef
 🔑 如何获取 WECHAT_APP_SECRET：
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-1. 在同一个页面（开发 → 基本配置）
-2. 找到「开发者密码(AppSecret)」
-3. 点击「重置」或「查看」（需要管理员扫码）
-4. 复制 AppSecret
-5. 粘贴到 ~/.mp-editor/.env 文件中
+1. 访问 https://developers.weixin.qq.com/ 登录你的公众号
+2. 在开发者平台获取你的 AppSecret
+3. 粘贴到 ~/.mp-editor/.env 文件中
 
 ⚠️  重要：AppSecret 只显示一次，请妥善保存！
 """
@@ -343,12 +340,13 @@ def cmd_setup(args):
     ip = get_public_ip()
     print(f"\n📍 你的出口 IP 地址：{ip}")
     print("""
-⚠️  发布前请确保把这个 IP 添加到微信白名单：
+⚠️  发布前需要把 IP 添加到微信白名单：
 
-1. 登录微信公众平台：https://mp.weixin.qq.com/
-2. 左侧菜单「开发」→「基本配置」
-3. 找到「IP白名单」，点击「查看」
-4. 添加你的 IP 地址
+1. 到 https://developers.weixin.qq.com/ 登录你的公众号
+2. 获取你的公众号 APPID 和 AppSecret
+3. 添加 IP 白名单（上方显示的 IP）
+
+💡 也可以访问 https://ip38.com 查看你的机器出口 IP
 """)
 
     # Step 5: Run test
