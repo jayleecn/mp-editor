@@ -35,7 +35,7 @@ AI 会一步步引导你完成配置，不用看下面的文档。
 |--------|------|----------|
 | `WECHAT_APP_ID` | 微信公众号身份 | [微信公众平台](https://mp.weixin.qq.com/) → 开发 → 基本配置 |
 | `WECHAT_APP_SECRET` | 微信公众号密钥 | 同上 |
-| `ALIYUN_API_KEY` 或 `GOOGLE_API_KEY` | AI 服务调用 | 阿里云 DashScope 或 Google AI Studio |
+| `ALIYUN_API_KEY` | AI 服务调用 | [阿里云 DashScope](https://dashscope.console.aliyun.com/) |
 
 配置会自动检测，缺少时会提示你如何获取。
 
@@ -160,7 +160,7 @@ AI 会一步步引导你完成配置，不用看下面的文档。
 
 **原因：** AI 画图服务暂时不可用
 
-**解决：** 系统会自动切换到备用服务商。如果都失败，会提示你重试。
+**解决：** 请检查阿里云 API Key 是否正确，或稍后重试。
 
 ### 3. 文章发布成功但封面不显示
 
@@ -172,28 +172,7 @@ AI 会一步步引导你完成配置，不用看下面的文档。
 
 运行 `/mp help` 查看完整指南，或直接问 AI：「怎么用 mp-editor？」
 
-Generate local preview without publishing. Creates HTML and downloads cover image.
-
-**Example:**
-```
-/mp preview ~/Documents/draft.md
-```
-
-**Output directory:** `./mp-editor-output/`
-- `article.html` - WeChat-formatted HTML
-- `article.md` - Polished Markdown
-- `metadata.json` - Article metadata and cover image URL
-
-### `/mp publish <file>`
-
-Full pipeline: polish → generate cover → convert to HTML → publish to WeChat draft box.
-
-**Example:**
-```
-/mp publish ~/Documents/draft.md
-```
-
-**Result:** Article appears in WeChat Official Account Platform draft box.
+---
 
 ## 🔧 技术说明（给 AI 看的）
 
@@ -206,8 +185,8 @@ polish → cover_prompt → image_gen → md2html → access_token → upload_ma
 
 ### AI 服务商
 
-- **文本润色**：默认阿里云 DashScope，失败自动切 Google Gemini
-- **封面生成**：默认阿里云 DashScope，失败自动切 Google Gemini
+- **文本润色**：阿里云 DashScope
+- **封面生成**：阿里云 DashScope
 
 ### 配置文件
 

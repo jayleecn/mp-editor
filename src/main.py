@@ -152,42 +152,25 @@ WECHAT_APP_ID=wx1234567890abcdef
         })
 
     # Check LLM config
-    llm_provider = os.getenv("LLM_PROVIDER", "aliyun")
     aliyun_key = os.getenv("ALIYUN_API_KEY")
-    google_key = os.getenv("GOOGLE_API_KEY")
 
     has_aliyun = aliyun_key and aliyun_key != "your_aliyun_api_key_here"
-    has_google = google_key and google_key != "your_google_api_key_here"
 
-    if not has_aliyun and not has_google:
+    if not has_aliyun:
         issues.append({
             "type": "error",
-            "name": "AI_API_KEY",
-            "message": "未配置任何 AI 服务密钥",
+            "name": "ALIYUN_API_KEY",
+            "message": "阿里云 API Key 未配置",
             "guide": """
-🤖 如何获取 AI 服务密钥（二选一）：
+🤖 如何获取阿里云 API Key：
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-方案 A：阿里云 DashScope（推荐，国内稳定）
-────────────────────────────────────────────────────────────
 1. 访问：https://dashscope.console.aliyun.com/
 2. 注册/登录阿里云账号
 3. 进入「API-KEY 管理」
 4. 点击「创建新的 API-KEY」
 5. 复制 key 到 ~/.mp-editor/.env：
    ALIYUN_API_KEY=your_key_here
-
-方案 B：Google Gemini（备选）
-────────────────────────────────────────────────────────────
-1. 访问：https://aistudio.google.com/
-2. 登录 Google 账号
-3. 点击「Get API key」
-4. 创建新的 API key
-5. 复制 key 到 ~/.mp-editor/.env：
-   GOOGLE_API_KEY=your_key_here
-   LLM_PROVIDER=google
-
-💡 建议：先配置阿里云，国内访问更快更稳定
 """
         })
 

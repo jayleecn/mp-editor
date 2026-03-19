@@ -1,6 +1,7 @@
 """文章润色节点 - Decoupled from Coze SDK"""
 import os
 import json
+import re
 from jinja2 import Template
 from langchain_core.runnables import RunnableConfig
 from graphs.state import PolishInput, PolishOutput
