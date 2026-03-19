@@ -8,11 +8,12 @@
 
 **把下面这段话复制给你的 AI 助手，它会帮你装好：**
 
-> 帮我安装 mp-editor 这个 skill，仓库地址是 https://github.com/jayleecn/mp-editor 。安装完成后，指导我配置 env 文件，需要哪些 key 告诉我去哪里找。
+> 帮我安装 mp-editor 这个 skill，仓库地址是 https://github.com/jayleecn/mp-editor 。安装好后，直接执行 /mp setup 协助我完成初始化设置，并告诉我出口 IP 是多少，方便我添加微信公众号的 IP 白名单
 
-装好后，你只需要做两件事：
+装好后，你只需要做三件事：
 1. **配置 key**（AI 会指导你）
-2. **发稿**（把推文草稿丢给 AI 就行）
+2. **添加 IP 白名单**（AI 会指导你）
+3. **发稿**（把推文草稿丢给 AI 就行）
 
 ---
 
@@ -69,6 +70,9 @@ AI 帮你优化文章，生成新的标题和摘要，输出 Markdown 文件。
 
 **阿里云 DashScope：**
 - `ALIYUN_API_KEY` - [阿里云控制台](https://dashscope.console.aliyun.com/) 创建
+- `ALIYUN_MODEL`=qwen3.5-plus
+- `ALIYUN_IMAGE_MODEL`=z-image-turbo
+- `ALIYUN_BASE_URL`=https://dashscope.aliyuncs.com/compatible-mode/v1/
 
 配置文件位置：`~/.mp-editor/.env`
 

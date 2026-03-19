@@ -2,14 +2,14 @@
 name: mp-editor
 description: WeChat Official Account article editor. Polish articles with LLM, generate AI covers, convert Markdown to WeChat HTML, and publish to WeChat draft box.
 trigger: |
-  Use when user mentions WeChat Official Account, 公众号, article editing, 润色文章, 生成封面, 发布文章, 排版, 发文, 发公众号.
+  Use when user mentions WeChat Official Account, 公众号, article editing, 润色文章, 生成封面, 发布文章, 发稿, 排版, 发文, 发公众号.
   Also trigger on commands: /mp setup, /mp help, mp setup, mp help, 初始化, 配置, 设置, 怎么用, 使用帮助.
   Also trigger when user asks: "怎么配置", "怎么安装", "怎么用", "不会用", "怎么获取", "AppID", "AppSecret", "API Key", "IP白名单".
 ---
 
 # MP-Editor - 公众号 AI 编辑助手
 
-把 Markdown 草稿自动润色、排版、配图，直接发到公众号草稿箱。
+把推文草稿自动润色、排版、配图，直接发到公众号草稿箱。
 
 ## 🚀 新手必读
 
@@ -51,7 +51,7 @@ AI 会一步步引导你完成配置，不用看下面的文档。
 ### `/mp setup` - 初始化配置（新手先跑这个）
 
 交互式引导完成所有配置，包括：
-- 创建 .env 配置文件
+- 创建 .env 配置文件（若还没有）
 - 检查必填参数
 - 测试 API 连通性
 - 显示当前 IP（用于微信白名单）
@@ -168,13 +168,7 @@ AI 会一步步引导你完成配置，不用看下面的文档。
 
 **解决：** 请检查阿里云 API Key 是否正确，或稍后重试。
 
-### 3. 文章发布成功但封面不显示
-
-**原因：** 微信需要把图片上传到自家服务器
-
-**解决：** 这是正常的，系统会自动处理。如果封面没显示，检查 IP 白名单是否配置正确。
-
-### 4. 不知道命令怎么用
+### 3. 不知道命令怎么用
 
 运行 `/mp help` 查看完整指南，或直接问 AI：「怎么用 mp-editor？」
 
