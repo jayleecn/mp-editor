@@ -81,8 +81,9 @@ class LLMService:
         Returns:
             Response text from the LLM
         """
+        env_model = (os.getenv("ALIYUN_MODEL") or "").strip()
         config = LLMConfig(
-            model=llm_config.get("model"),
+            model=env_model or llm_config.get("model"),
             temperature=llm_config.get("temperature", 0.8),
             top_p=llm_config.get("top_p", 1.0),
             max_completion_tokens=llm_config.get("max_completion_tokens", 4096),

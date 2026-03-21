@@ -1,32 +1,26 @@
-# Environment variables
-.env
-.mp-editor/.env
-
-# Virtual environment
-.venv/
-venv/
-
-# Python cache
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+.venv/
+venv/
+ENV/
+env/
 
 # IDE
-.vscode/
 .idea/
+.vscode/
 *.swp
 *.swo
+*~
 
-# OS
+# macOS
 .DS_Store
-Thumbs.db
+.AppleDouble
+.LSOverride
 
-# Output directories
+# Project specific
+.env
 mp-editor-output/
-tmp/
-*.log
-
-# Test files
-test*.md
