@@ -150,7 +150,7 @@ AI 会一步步引导你完成配置，不用看下面的文档。
 
 - 标题（20字以内）
 - 摘要（50字以内）
-- 润色后的 Markdown
+- JSON 输出：`title`、`abstract`、`content`；`content` 是润色后的 Markdown
 
 ***
 
@@ -214,3 +214,17 @@ polish → cover_prompt → image_gen → md2html → access_token → upload_ma
 - `~/.mp-editor/.env` - 用户配置（API 密钥等）
 - `config/polish_node_cfg.json` - 润色提示词配置
 - `config/cover_prompt_node_cfg.json` - 封面提示词配置
+
+### 实际执行映射
+
+`/mp` 是助手任务的简写，执行时转换为仓库根目录下的 Python CLI。普通克隆先创建 `.venv` 并安装 `requirements.txt`；不要猜测全局 `/mp` 可执行文件。
+
+| 用户任务 | 实际执行 |
+| --- | --- |
+| `/mp setup` | `.venv/bin/python -m src.main setup` |
+| `/mp help` | `.venv/bin/python -m src.main help` |
+| `/mp polish <文件>` | `.venv/bin/python -m src.main polish <文件>` |
+| `/mp preview <文件>` | `.venv/bin/python -m src.main preview <文件>` |
+| `/mp publish <文件>` | `.venv/bin/python -m src.main publish <文件>` |
+
+从其他目录调用时，先切换到 skill/仓库根目录（提示词配置使用相对路径），或在已激活虚拟环境时使用 `scripts/run.sh`。`mp-editor.sh` 仅适用于其写明的安装位置。模板是 `.env.example`；配置顺序和维护入口见 [README.md](README.md)。当前只有 Aliyun 服务实现。

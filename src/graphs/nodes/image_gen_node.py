@@ -12,7 +12,7 @@ def image_gen_node(state: ImageGenInput, config: RunnableConfig) -> ImageGenOutp
     title: 图像生成
     desc: 根据提示词生成封面图片
     """
-    # Initialize image generation service (reads IMAGE_PROVIDER from env)
+    # Initialize the currently implemented Aliyun image generation service
     service = ImageGenService()
 
     # Generate image

@@ -55,7 +55,7 @@ AI 会生成 `article.html` 和封面图，你在浏览器打开看看效果。
 /mp polish ~/Documents/我的草稿.md
 ```
 
-AI 帮你优化文章，生成新的标题和摘要，输出 Markdown 文件。
+AI 帮你优化文章，生成新的标题和摘要。CLI 输出包含 `title`、`abstract`、`content` 的 JSON，其中 `content` 是润色后的 Markdown；`-o` 保存的也是该 JSON。
 
 ***
 
@@ -159,3 +159,37 @@ MIT - 免费用于个人和商业用途。
 ***
 
 **有问题？** 直接把报错信息发给 AI，它会帮你解决。
+
+## 开发与实际执行入口
+
+`/mp …` 是给 AI 助手的任务写法；实际执行的是 Python CLI。它不会仅凭克隆仓库就在终端注册 `/mp` 命令。从仓库根目录安装并查看参数：
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python -m src.main --help
+```
+
+| 助手任务 | 仓库根目录下的实际命令 |
+| --- | --- |
+| `/mp setup` | `.venv/bin/python -m src.main setup` |
+| `/mp help` | `.venv/bin/python -m src.main help` |
+| `/mp polish draft.md` | `.venv/bin/python -m src.main polish draft.md` |
+| `/mp preview draft.md` | `.venv/bin/python -m src.main preview draft.md` |
+| `/mp publish draft.md` | `.venv/bin/python -m src.main publish draft.md` |
+
+`setup` 会创建配置、检查微信/模型连通性并获取出口 IP；`preview` 会调用模型；`publish` 会上传公众号草稿。[scripts/run.sh](scripts/run.sh) 切换到仓库根目录再调用当前 Python；[mp-editor.sh](mp-editor.sh) 是已安装到 `~/.agents/skills/mp-editor` 时的包装器。普通克隆使用上面的 CLI 命令即可。
+
+| 要改的功能 | 入口 |
+| --- | --- |
+| 参数、配置加载、polish/preview/publish 分派与本地输出 | [src/main.py](src/main.py) |
+| 发布工作流和状态模型 | [src/graphs/graph.py](src/graphs/graph.py)、[src/graphs/state.py](src/graphs/state.py) |
+| 润色/封面提示词 | [config/polish_node_cfg.json](config/polish_node_cfg.json)、[config/cover_prompt_node_cfg.json](config/cover_prompt_node_cfg.json) |
+| HTML 转换与各步骤 | [src/graphs/nodes/md2html_node.py](src/graphs/nodes/md2html_node.py)、[src/graphs/nodes](src/graphs/nodes) |
+| 文本/图像模型 | [src/llm/service.py](src/llm/service.py)、[src/llm/providers.py](src/llm/providers.py)、[src/llm/image_service.py](src/llm/image_service.py) |
+| 微信 token、素材与草稿 API | [src/utils/wechat_client.py](src/utils/wechat_client.py) |
+| AI 助手的命令映射 | [SKILL.md](SKILL.md) |
+
+配置优先读取 `~/.mp-editor/.env`，不存在时读取当前目录 `.env`，否则使用环境变量。模板为 [.env.example](.env.example)。当前只实现 Aliyun 服务；`LLM_PROVIDER` 的其他值会回退到 Aliyun，图像服务固定使用 Aliyun。
+
+离线入口复核用 `.venv/bin/python -m src.main --help` 和 `bash -n scripts/run.sh` 和 `bash -n mp-editor.sh`；实际润色、图片和微信上传需要有效配置。仓库没有自动化测试套件。
